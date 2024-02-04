@@ -1,0 +1,56 @@
+<template>
+  <div class="text-center">
+    <table class="table align-middle my-4">
+      <thead>
+        <tr>
+          <th style="width: 5%">#</th>
+          <th style="width: 15%">名稱</th>
+          <th style="width: 30%">敘述</th>
+          <th style="width: 10%">原價</th>
+          <th style="width: 10%">特價</th>
+          <th style="width: 30%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(iproduct, idx) in allProducts" :key="iproduct.id">
+          <th>{{ idx + 1 }}</th>
+          <td>{{ iproduct.title }}</td>
+          <td>{{ iproduct.description }}</td>
+          <td>{{ iproduct.origin_price }}</td>
+          <td>{{ iproduct.price }}</td>
+          <td>
+            <div>
+              <RouterLink class="btn btn-success me-2" :to="`/products/${iproduct.id}`"
+                >查看</RouterLink
+              >
+              <button class="btn btn-primary">加入購物車</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <RouterLink class="btn btn-danger mx-auto" to="/">返回前台</RouterLink>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      allProducts: []
+    }
+  },
+  methods: {
+    getProducts() {
+      this.$axios.get('/products/all').then((res) => {
+        this.allProducts = res.data.products
+      })
+    }
+  },
+  mounted() {
+    this.getProducts()
+  }
+}
+</script>
+
+<style></style>
