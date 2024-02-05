@@ -24,7 +24,6 @@
                 </template>
             </div>
         </template>
-        <p class="text-secondary" v-if="!chooseIsNull">請選擇一個商品查看</p>
     </div>
 </template>
 

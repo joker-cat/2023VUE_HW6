@@ -113,8 +113,8 @@ export default {
         putProducts() {
             this.checkEmptyValues();
             if (this.inputNull.length === 0) {
-                this.$http
-                    .put(`https://ec-course-api.hexschool.io/v2/api/joooker/admin/product/${this.choose.id}`, this.change)
+                this.$axios
+                    .put(`/admin/product/${this.choose.id}`, this.change)
                     .then((res) => {
                         if (res.data.success) {
                             this.hasCookie = res.data.success;
