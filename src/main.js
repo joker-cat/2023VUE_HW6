@@ -6,6 +6,13 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+//LoadingPlugin
+import { LoadingPlugin } from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/css/index.css'
+
+//toast CSS
+import 'vue3-toastify/dist/index.css'
+
 import App from './App.vue'
 import router from './router'
 
@@ -22,6 +29,7 @@ app.config.globalProperties.$axios = axios.create({
 
 app.use(VueAxios, axios)
 app.use(createPinia())
+app.use(LoadingPlugin)
 app.use(router)
 
 app.mount('#app')

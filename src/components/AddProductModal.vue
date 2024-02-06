@@ -133,8 +133,8 @@ export default {
             }
         },
         postProduct() {
-            this.$http
-                .post('https://ec-course-api.hexschool.io/v2/api/joooker/admin/product', {
+            this.$axios
+                .post('/admin/product', {
                     ...this.addProduct
                 })
                 .then((res) => {

@@ -7,7 +7,11 @@
             <RouterLink class="btn btn-secondary me-3" to="/products">商品頁</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="btn btn-secondary" to="/cart">購物車</RouterLink>
+            <RouterLink class="btn btn-secondary" to="/cart"
+              >購物車<span class="text-ligth" v-if="getMyCart.length > 0"
+                >({{ getMyCart.length }})</span
+              ></RouterLink
+            >
           </li>
         </ul>
       </nav>
@@ -16,7 +20,14 @@
 </template>
 
 <script>
-export default {}
+import cart from '../stores/cart.js'
+import { mapState, mapActions } from 'pinia'
+
+export default {
+  computed: {
+    ...mapState(cart, ['getMyCart'])
+  }
+}
 </script>
 
 <style></style>

@@ -85,7 +85,9 @@ export default {
   computed: {
     ...mapState(cart, ['getProducts', 'getPagination'])
   },
-  mounted() {}
+  mounted() {
+
+  }
 }
 </script>
 
