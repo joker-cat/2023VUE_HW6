@@ -29,6 +29,14 @@ export default defineStore('cart', {
         .get(`${this.baseUrl}/products/?page=${page}`)
         .then((res) => {
           const addAttribute = res.data.products.map((i) => (i = { ...i, ispressed: 0 }))
+          this.myCart.map((icart) => {
+            const icartId = icart.id
+            const getidx = addAttribute.findIndex((i) => icartId === i.id)
+            if (getidx !== -1) {
+              icart.ispressed = true
+              addAttribute.splice(getidx, 1, icart)
+            }
+          })
           this.products = addAttribute
           this.pagination = res.data.pagination
         })
@@ -48,11 +56,9 @@ export default defineStore('cart', {
       const findIdx = this.myCart.findIndex((icart) => icart.id === productId)
       const findProductsId = this.products.findIndex((iproduct) => iproduct.id === productId)
       this.myCart.splice(findIdx, 1)
-      this.products[findProductsId].ispressed = false
     },
     removeAllProduct() {
       this.myCart = []
-      this.products.map((i) => (i.ispressed = false))
     }
   }
 })
