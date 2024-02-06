@@ -27,7 +27,9 @@
               <RouterLink class="btn btn-success me-2" :to="`/products/${iproduct.id}`"
                 >查看</RouterLink
               >
-              <button class="btn btn-primary" @click="addToCart(iproduct.id)">加入購物車</button>
+              <button class="btn btn-primary" :class="getButtonClass(iproduct)" @click="clickaddToCart(iproduct)">
+                {{ iproduct.ispressed?'已加入購物車':'加入購物車' }}
+              </button>
             </div>
           </td>
         </tr>
@@ -78,16 +80,25 @@ export default {
   },
   methods: {
     ...mapActions(cart, ['addToCart', 'axiosGetProducts']),
+    clickaddToCart(product) {
+      this.addToCart(product.id);
+      product.ispressed = true;
+    },
     getPageProduct(page) {
       this.axiosGetProducts(page)
+    },
+    getButtonClass(iproduct) {
+      return {
+        btn: true,
+        'btn-primary': !iproduct.ispressed,
+        'btn-danger': iproduct.ispressed
+      }
     }
   },
   computed: {
     ...mapState(cart, ['getProducts', 'getPagination'])
   },
-  mounted() {
-
-  }
+  mounted() {}
 }
 </script>
 

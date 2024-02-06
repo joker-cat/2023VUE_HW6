@@ -2,7 +2,13 @@
   <div class="row py-3">
     <div class="col-lg-7 col-sm-12">
       <h2>
-        產品列表<router-link class="btn fw-bolder text-danger fs-6" to="/">回前台</router-link>
+        產品列表
+        <router-link class="btn fw-bolder text-light fs-6 p-1 me-2 bg-danger" to="/"
+          >回前台</router-link
+        >
+        <button class="btn fw-bolder text-danger fs-6 p-1 border border-danger" @click="signout">
+          登出
+        </button>
       </h2>
       <table class="table table-hover mt-4">
         <thead>
@@ -133,7 +139,12 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    if (!docCookies.hasItem('token')) {
+      this.$router.push('/')
+      return
+    }
+  },
   methods: {
     delProduct(id) {
       this.$axios
@@ -175,7 +186,6 @@ export default {
       this.delChoose = { ...item }
       this.$refs.callDelModal.openModal()
     },
-
     colseAddModal() {
       this.$refs.callAddModal.closeModal()
       this.renderProduct()
@@ -187,6 +197,10 @@ export default {
     colseDelModal() {
       this.$refs.callDelModal.closeModal()
       this.renderProduct()
+    },
+    signout() {
+      docCookies.removeItem('token')
+      this.$router.push('/')
     }
   },
   mounted() {

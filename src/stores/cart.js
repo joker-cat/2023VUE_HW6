@@ -7,7 +7,7 @@ import axios from 'axios'
 
 export default defineStore('cart', {
   state: () => ({
-    baseUrl: 'https://ec-course-api.hexschool.io/v2/api/joooker',
+    baseUrl: import.meta.env.VITE_PATH,
     products: [],
     pagination: [],
     myCart: []
@@ -28,7 +28,8 @@ export default defineStore('cart', {
       axios
         .get(`${this.baseUrl}/products/?page=${page}`)
         .then((res) => {
-          this.products = res.data.products
+          const addAttribute = res.data.products.map((i) => (i = { ...i, ispressed: 0 }))
+          this.products = addAttribute
           this.pagination = res.data.pagination
         })
         .catch((err) => console.log(err))
@@ -45,10 +46,13 @@ export default defineStore('cart', {
     },
     removeToProduct(productId) {
       const findIdx = this.myCart.findIndex((icart) => icart.id === productId)
+      const findProductsId = this.products.findIndex((iproduct) => iproduct.id === productId)
       this.myCart.splice(findIdx, 1)
+      this.products[findProductsId].ispressed = false
     },
     removeAllProduct() {
       this.myCart = []
+      this.products.map((i) => (i.ispressed = false))
     }
   }
 })
