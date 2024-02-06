@@ -17,12 +17,6 @@ export default {
     titleName() {
       return { '/': '首頁', '/products': '商品頁', '/cart': '購物車' }[this.$route.path]
     }
-  },
-  methods: {
-    ...mapActions(cart, ['axiosGetProducts'])
-  },
-  mounted() {
-    this.axiosGetProducts()
   }
 }
 </script>

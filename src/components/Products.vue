@@ -80,7 +80,12 @@ import cart from '../stores/cart.js'
 import { mapState, mapActions } from 'pinia'
 export default {
   data() {
-    return {}
+    return {
+      page:1
+    }
+  },
+  created() {
+    
   },
   methods: {
     ...mapActions(cart, ['addToCart', 'axiosGetProducts']),
@@ -89,6 +94,7 @@ export default {
       product.ispressed = true
     },
     getPageProduct(page) {
+      this.page = page
       this.axiosGetProducts(page)
     },
     getButtonClass(iproduct) {
@@ -100,9 +106,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(cart, ['getProducts', 'getPagination'])
+    ...mapState(cart, ['getProducts', 'getPagination','getFrontPage'])
   },
-  mounted() {}
+  mounted() {
+    this.getPageProduct(this.getFrontPage)
+  }
 }
 </script>
 

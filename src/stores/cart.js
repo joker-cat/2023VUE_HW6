@@ -10,7 +10,8 @@ export default defineStore('cart', {
     baseUrl: import.meta.env.VITE_PATH,
     products: [],
     pagination: [],
-    myCart: []
+    myCart: [],
+    frontPage: 1
   }),
   getters: {
     getProducts: ({ products }) => {
@@ -18,6 +19,9 @@ export default defineStore('cart', {
     },
     getPagination: ({ pagination }) => {
       return pagination
+    },
+    getFrontPage({ frontPage }) {
+      return frontPage
     },
     getMyCart: ({ myCart }) => {
       return myCart
@@ -28,17 +32,17 @@ export default defineStore('cart', {
       axios
         .get(`${this.baseUrl}/products/?page=${page}`)
         .then((res) => {
-          const addAttribute = res.data.products.map((i) => (i = { ...i, ispressed: 0 }))
+          const addAttribute = res.data.products.map((i) => (i = { ...i, ispressed: false }))
           this.myCart.map((icart) => {
             const icartId = icart.id
             const getidx = addAttribute.findIndex((i) => icartId === i.id)
             if (getidx !== -1) {
-              icart.ispressed = true
-              addAttribute.splice(getidx, 1, icart)
+              addAttribute[getidx]['ispressed'] = true
             }
           })
           this.products = addAttribute
           this.pagination = res.data.pagination
+          this.frontPage = page
         })
         .catch((err) => console.log(err))
     },
@@ -53,9 +57,9 @@ export default defineStore('cart', {
       }
     },
     removeToProduct(productId) {
-      const findIdx = this.myCart.findIndex((icart) => icart.id === productId)
-      const findProductsId = this.products.findIndex((iproduct) => iproduct.id === productId)
-      this.myCart.splice(findIdx, 1)
+      const findMyCartIdx = this.myCart.findIndex((icart) => icart.id === productId)
+      this.myCart[findMyCartIdx]['ispressed'] = false
+      this.myCart.splice(findMyCartIdx, 1)
     },
     removeAllProduct() {
       this.myCart = []
