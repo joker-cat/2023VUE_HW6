@@ -1,6 +1,6 @@
 <script>
 import { docCookies } from '../cookie.js'
-import { mapState, mapActions } from 'pinia'
+import { mapActions } from 'pinia'
 import cart from '../stores/cart.js'
 import NavbarLink from '../components/NavbarLink.vue'
 export default {
@@ -13,6 +13,9 @@ export default {
     },
     hasCookie() {
       return docCookies.hasItem('token')
+    },
+    titleName() {
+      return { '/': '首頁', '/products': '商品頁', '/cart': '購物車' }[this.$route.path]
     }
   },
   methods: {
@@ -26,7 +29,7 @@ export default {
 
 <template>
   <div class="py-3">
-    <h2 class="fw-bolder text-center mb-3">首頁</h2>
+    <h2 class="fw-bolder text-center mb-3">{{ titleName }}</h2>
     <NavbarLink />
     <RouterView />
     <p class="fw-bolder"></p>

@@ -1,7 +1,9 @@
 <template>
   <div class="row py-3">
     <div class="col-lg-7 col-sm-12">
-      <h2>產品列表<router-link class="btn fw-bolder text-danger fs-6" to="/">回前台</router-link></h2>
+      <h2>
+        產品列表<router-link class="btn fw-bolder text-danger fs-6" to="/">回前台</router-link>
+      </h2>
       <table class="table table-hover mt-4">
         <thead>
           <tr>
@@ -171,7 +173,6 @@ export default {
     },
     openDelModal(item) {
       this.delChoose = { ...item }
-      console.log(this.delChoose)
       this.$refs.callDelModal.openModal()
     },
 

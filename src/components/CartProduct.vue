@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div v-if="getMyCartLength">
     <div class="text-end">
-      <button class="btn btn-outline-danger" type="button" @click="clearCart">清空購物車</button>
+      <button class="btn btn-outline-danger" type="button" @click="userRemoveAllProduct">清空購物車</button>
     </div>
     <table class="table align-middle">
       <thead>
         <tr>
           <th class="col"></th>
+          <th class="col">圖式</th>
           <th class="col">品名</th>
           <th class="col">數量/單位</th>
           <th class="col">單價</th>
@@ -19,11 +20,14 @@
               <button
                 type="button"
                 class="btn btn-outline-danger btn-sm"
-                @click="removeProduct(iproduct.id)"
+                @click="userRemoveCartProduct(iproduct.id)"
               >
                 <i class="fas fa-spinner fa-pulse"></i>
                 x
               </button>
+            </td>
+            <td style="height: 100px">
+              <img class="h-100" :src="iproduct.imageUrl" alt="" />
             </td>
             <td>
               {{ iproduct.title }}
@@ -59,20 +63,24 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3" class="text-end">原價總計</td>
+          <td colspan="2" class="text-end"></td>
+          <td colspan="2" class="text-end">原價總計</td>
           <td class="text-end">{{ originPriceTotal.originPrice }}</td>
         </tr>
         <tr>
-          <td colspan="3" class="text-end">折扣</td>
+          <td colspan="2" class="text-end"></td>
+          <td colspan="2" class="text-end">折扣</td>
           <td class="text-end text-danger">-{{ originPriceTotal.differencePrice }}</td>
         </tr>
         <tr>
-          <td colspan="3" class="text-end text-success">總折扣價</td>
+          <td colspan="2" class="text-end"></td>
+          <td colspan="2" class="text-end text-success">總折扣價</td>
           <td class="text-end">{{ originPriceTotal.price }}</td>
         </tr>
       </tfoot>
     </table>
   </div>
+  <div class="text-danger fs-1 fw-bolder py-5 text-center" v-else>購物車為空</div>
 </template>
 
 <script>
@@ -80,9 +88,15 @@ import cart from '../stores/cart.js'
 import { mapState, mapActions } from 'pinia'
 export default {
   methods: {
-    ...mapActions(cart, ['addToCart']),
+    ...mapActions(cart, ['addToCart', 'removeToProduct', 'removeAllProduct']),
     userAddToCart(ievent, productId) {
       this.addToCart(productId, Number(ievent.target.value))
+    },
+    userRemoveCartProduct(productId) {
+      this.removeToProduct(productId)
+    },
+    userRemoveAllProduct() {
+      this.removeAllProduct()
     }
   },
   computed: {

@@ -9,34 +9,46 @@ export default defineStore('cart', {
   state: () => ({
     baseUrl: 'https://ec-course-api.hexschool.io/v2/api/joooker',
     products: [],
+    pagination: [],
     myCart: []
   }),
   getters: {
     getProducts: ({ products }) => {
       return products
     },
+    getPagination: ({ pagination }) => {
+      return pagination
+    },
     getMyCart: ({ myCart }) => {
       return myCart
     }
   },
   actions: {
-    axiosGetProducts() {
-      axios.get(`${this.baseUrl}/products/all`).then((res) => {
-        this.products = res.data.products;
-      })
-
+    axiosGetProducts(page = 1) {
+      axios
+        .get(`${this.baseUrl}/products/?page=${page}`)
+        .then((res) => {
+          this.products = res.data.products
+          this.pagination = res.data.pagination
+        })
+        .catch((err) => console.log(err))
     },
     addToCart(productId, count = 1) {
-      console.log(productId, count);
-      // return
-      const hasInCart = this.myCart.filter(iproduct => iproduct.id === productId).length
+      const hasInCart = this.myCart.filter((iproduct) => iproduct.id === productId).length
       if (hasInCart) {
-        const findIdx = this.myCart.findIndex(iMycart => iMycart.id === productId);
-        this.myCart[findIdx]["count"] = count;
+        const findIdx = this.myCart.findIndex((iMycart) => iMycart.id === productId)
+        this.myCart[findIdx]['count'] = count
       } else {
-        const findIdx = this.products.findIndex(iproduct => iproduct.id === productId);
-        this.myCart.push({ ...this.products[findIdx], count });
+        const findIdx = this.products.findIndex((iproduct) => iproduct.id === productId)
+        this.myCart.push({ ...this.products[findIdx], count })
       }
+    },
+    removeToProduct(productId) {
+      const findIdx = this.myCart.findIndex((icart) => icart.id === productId)
+      this.myCart.splice(findIdx, 1)
+    },
+    removeAllProduct() {
+      this.myCart = []
     }
   }
 })
