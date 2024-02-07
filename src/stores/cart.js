@@ -1,5 +1,6 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { toast } from 'vue3-toastify'
 import axios from 'axios'
 
 //Pinia 是獨立於 Vue 核心的狀態管理函式庫，它並不依賴 Vue 的全域配置
@@ -11,7 +12,7 @@ export default defineStore('cart', {
     products: [],
     pagination: [],
     myCart: [],
-    frontPage: 1
+    frontPage: 1,
   }),
   getters: {
     getProducts: ({ products }) => {
@@ -50,19 +51,30 @@ export default defineStore('cart', {
       const hasInCart = this.myCart.filter((iproduct) => iproduct.id === productId).length
       if (hasInCart) {
         const findIdx = this.myCart.findIndex((iMycart) => iMycart.id === productId)
-        this.myCart[findIdx]['count'] = count
+        this.myCart[findIdx]['count'] = count + 1
+        this.toastAnimation('數量成功累加')
       } else {
         const findIdx = this.products.findIndex((iproduct) => iproduct.id === productId)
         this.myCart.push({ ...this.products[findIdx], count })
+        this.toastAnimation('成功加入購物車')
       }
     },
     removeToProduct(productId) {
       const findMyCartIdx = this.myCart.findIndex((icart) => icart.id === productId)
       this.myCart[findMyCartIdx]['ispressed'] = false
       this.myCart.splice(findMyCartIdx, 1)
+      this.toastAnimation('成功移除商品')
     },
     removeAllProduct() {
       this.myCart = []
+      this.toastAnimation('成功清空購物車')
+    },
+    toastAnimation(str) {
+      toast(str, {
+        theme: 'colored',
+        type: 'error',
+        dangerouslyHTMLString: true
+      })
     }
   }
 })

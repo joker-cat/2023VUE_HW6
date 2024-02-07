@@ -55,6 +55,10 @@ export default {
   },
   methods: {
     login() {
+      if (this.userInfo.username.trim()===''||this.userInfo.password.trim()==='') {
+        alert('欄位請確實填寫');
+        return
+      }
       this.$axios
         .post('https://ec-course-api.hexschool.io/v2/admin/signin', this.userInfo)
         .then((res) => {
@@ -67,6 +71,7 @@ export default {
           }
         })
         .catch((error) => {
+          alert('登入失敗')
           console.log(error)
         })
     }

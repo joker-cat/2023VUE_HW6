@@ -81,12 +81,11 @@ import { mapState, mapActions } from 'pinia'
 export default {
   data() {
     return {
-      page:1
+      page: 1,
+      load: null
     }
   },
-  created() {
-    
-  },
+  created() {},
   methods: {
     ...mapActions(cart, ['addToCart', 'axiosGetProducts']),
     clickaddToCart(product) {
@@ -94,6 +93,7 @@ export default {
       product.ispressed = true
     },
     getPageProduct(page) {
+      this.null = this.$loading.show()
       this.page = page
       this.axiosGetProducts(page)
     },
@@ -106,10 +106,15 @@ export default {
     }
   },
   computed: {
-    ...mapState(cart, ['getProducts', 'getPagination','getFrontPage'])
+    ...mapState(cart, ['getProducts', 'getPagination', 'getFrontPage'])
   },
   mounted() {
     this.getPageProduct(this.getFrontPage)
+  },
+  watch: {
+    getProducts() {
+      this.null.hide();
+    }
   }
 }
 </script>
