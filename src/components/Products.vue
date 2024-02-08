@@ -89,7 +89,8 @@ export default {
   methods: {
     ...mapActions(cart, ['addToCart', 'axiosGetProducts']),
     clickaddToCart(product) {
-      this.addToCart(product.id)
+      const InCart = this.myCart.findIndex((icart) => icart.id === product.id)
+      this.addToCart(product.id, InCart !== -1 ? this.myCart[InCart].count : 1)
       product.ispressed = true
     },
     getPageProduct(page) {
@@ -106,14 +107,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(cart, ['getProducts', 'getPagination', 'getFrontPage'])
+    ...mapState(cart, ['getProducts', 'getPagination', 'getFrontPage', 'myCart'])
   },
   mounted() {
     this.getPageProduct(this.getFrontPage)
   },
   watch: {
     getProducts() {
-      this.null.hide();
+      this.null.hide()
     }
   }
 }

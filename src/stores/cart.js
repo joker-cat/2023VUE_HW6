@@ -12,7 +12,7 @@ export default defineStore('cart', {
     products: [],
     pagination: [],
     myCart: [],
-    frontPage: 1,
+    frontPage: 1
   }),
   getters: {
     getProducts: ({ products }) => {
@@ -52,7 +52,7 @@ export default defineStore('cart', {
       if (hasInCart) {
         const findIdx = this.myCart.findIndex((iMycart) => iMycart.id === productId)
         this.myCart[findIdx]['count'] = count + 1
-        this.toastAnimation('數量成功累加')
+        this.toastAnimation('數量成功修改')
       } else {
         const findIdx = this.products.findIndex((iproduct) => iproduct.id === productId)
         this.myCart.push({ ...this.products[findIdx], count })

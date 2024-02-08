@@ -62,7 +62,6 @@ export default {
       this.$axios
         .post('https://ec-course-api.hexschool.io/v2/admin/signin', this.userInfo)
         .then((res) => {
-          console.log(res)
           if (res.data.message === '登入成功') {
             this.token = res.data.token
             docCookies.setItem('token', this.token)

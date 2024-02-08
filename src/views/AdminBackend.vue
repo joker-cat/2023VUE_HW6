@@ -199,8 +199,17 @@ export default {
       this.renderProduct()
     },
     signout() {
-      docCookies.removeItem('token')
-      this.$router.push('/')
+      this.$axios
+        .post('https://ec-course-api.hexschool.io/v2/logout')
+        .then((res) => {
+          alert('已登出')
+          docCookies.removeItem('token')
+          this.$router.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('登出失敗')
+        })
     }
   },
   mounted() {

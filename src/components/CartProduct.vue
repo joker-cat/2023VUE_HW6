@@ -1,7 +1,9 @@
 <template>
   <div v-if="getMyCartLength">
     <div class="text-end">
-      <button class="btn btn-outline-danger" type="button" @click="userRemoveAllProduct">清空購物車</button>
+      <button class="btn btn-outline-danger" type="button" @click="userRemoveAllProduct">
+        清空購物車
+      </button>
     </div>
     <table class="table align-middle">
       <thead>
@@ -41,7 +43,7 @@
                     type="number"
                     class="form-control"
                     :value="iproduct.count"
-                    @input="userAddToCart($event, iproduct.id)"
+                    @input="userAddToCart(iproduct.id, $event)"
                   />
                   <span class="input-group-text" id="basic-addon2">{{ iproduct.unit }}</span>
                 </div>
@@ -89,8 +91,9 @@ import { mapState, mapActions } from 'pinia'
 export default {
   methods: {
     ...mapActions(cart, ['addToCart', 'removeToProduct', 'removeAllProduct']),
-    userAddToCart(ievent, productId) {
-      this.addToCart(productId, Number(ievent.target.value))
+    userAddToCart(productId, ievent) {
+      //這邊是傳過來是修改後的數量，估計為預設
+      this.addToCart(productId, ievent.target.value - 1)
     },
     userRemoveCartProduct(productId) {
       this.removeToProduct(productId)
